@@ -33,7 +33,7 @@ module.exports = defineConfig({
         providers: [
           // ... other providers
           {
-            resolve: './src/modules/payment-manual',
+            resolve: '@rokmohar/medusa-payment-manual',
             id: 'manual',
           },
         ],

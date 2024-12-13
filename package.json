@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-payment-manual",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Manual payment plugin for Medusa 2",
   "main": "dist/index.js",
   "files": [
@@ -27,8 +27,7 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^2.0.1",
-    "@medusajs/utils": "^2.0.1",
-    "meilisearch": "^0.45.0"
+    "@medusajs/utils": "^2.0.1"
   },
   "peerDependencies": {
     "awilix": "^8.0.1"
