@@ -906,40 +906,41 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@medusajs/modules-sdk@^2.0.1":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@medusajs/modules-sdk/-/modules-sdk-2.0.3.tgz#96f4231faa73bc73bd4794094368a3b0994cf2ab"
-  integrity sha512-GazE264FkPiD0bS9+7rc7gCDccBz3HB99fNWcmtehQd3w3lmZEtAgZfdePjg2e+wb34zUL4PODmsUgNQjiQmzw==
+"@medusajs/modules-sdk@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@medusajs/modules-sdk/-/modules-sdk-2.1.3.tgz#e14b7933121db99c5a1f70fb001a26424f772417"
+  integrity sha512-n31HfUDS2QCpuNtAc0NiMHe9gyXQn5dhXihiYrW8n+KXOTbvn9icOqImnAoN8Uq/97a/yKa8+LKQUY9BokgdXg==
   dependencies:
-    "@medusajs/orchestration" "^2.0.3"
-    "@medusajs/types" "^2.0.3"
-    "@medusajs/utils" "^2.0.3"
+    "@medusajs/orchestration" "^2.1.3"
+    "@medusajs/types" "^2.1.3"
+    "@medusajs/utils" "^2.1.3"
 
-"@medusajs/orchestration@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@medusajs/orchestration/-/orchestration-2.0.3.tgz#cdf075b9c6880aa19823c6fa6a08f3cb6bb0a71b"
-  integrity sha512-hfjx3FBvsIdAEpfQyx0kqU9lY+dhcSL6nS54WqEpXL7W+D7Ur3pderUKzRcsH3MwtwS/uvR82EupQsml8Ojutw==
+"@medusajs/orchestration@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@medusajs/orchestration/-/orchestration-2.1.3.tgz#b64fe7fb503aa9a19a8d67231e365acc209ff27d"
+  integrity sha512-1VmYlRYqtyouGawc5C0wV3MgD225llmIXAHDkmyvhdSR1+RbZaSlR1Y5xt+Z5SFIa4TodTAzVYL3zLaTViZxLg==
   dependencies:
-    "@medusajs/types" "^2.0.3"
-    "@medusajs/utils" "^2.0.3"
+    "@medusajs/types" "^2.1.3"
+    "@medusajs/utils" "^2.1.3"
 
-"@medusajs/types@^2.0.1", "@medusajs/types@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-2.0.3.tgz#a01c99821dac195d9b9456f3188fb07f25b4decf"
-  integrity sha512-vjqIlZDcI4+gwfRJvnOcjeM65/2GYpyLhMQrlDHsyWI/Q/1OvnEb4vn93bB4i9g++Fmp7SA0T0NgwlwFmsDRcg==
+"@medusajs/types@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-2.1.3.tgz#efd8c89330695a8d699074b0ae7c789b77155679"
+  integrity sha512-+mjijFb0bUco1tggdEx8V2R7PpYjaJLjrALRTh3nbHQxa682pQxkr78jsonU9DQU/TzbLAQKAMluYb3c+XwKpw==
   dependencies:
     bignumber.js "^9.1.2"
 
-"@medusajs/utils@^2.0.1", "@medusajs/utils@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-2.0.3.tgz#514662769cf01e1bf827e50089dbb63fd389e15d"
-  integrity sha512-2mna/aBPBsjR0JMMto3SnYDfStJ68XLJbQ7EJ/M/jaR2IfQEn8UZoWOOiaabSw+qkFfVJB0+JMSIVP7rWJlGJg==
+"@medusajs/utils@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-2.1.3.tgz#4130caf7b4da11158ab26a5cab27dc14eae2b4fb"
+  integrity sha512-i/bU4nCuW98z5QoSSDLe7tVPqhBT/XctVsWWfxrYzCcIY69Q7CijT99hitCw6lcNGZXgNsUKtYb3tFAVaezwiw==
   dependencies:
     "@graphql-codegen/core" "^4.0.2"
     "@graphql-codegen/typescript" "^4.0.9"
     "@graphql-tools/merge" "^9.0.7"
     "@graphql-tools/schema" "^10.0.6"
-    "@medusajs/types" "^2.0.3"
+    "@medusajs/types" "^2.1.3"
+    "@types/pluralize" "^0.0.33"
     bignumber.js "^9.1.2"
     dotenv "^16.4.5"
     dotenv-expand "^11.0.6"
@@ -1038,6 +1039,11 @@
   integrity sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==
   dependencies:
     undici-types "~6.19.8"
+
+"@types/pluralize@^0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/pluralize/-/pluralize-0.0.33.tgz#8ad9018368c584d268667dd9acd5b3b806e8c82a"
+  integrity sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.3"
@@ -2553,11 +2559,6 @@ map-cache@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
   integrity sha512-8y/eV9QQZCiyn1SprXSrCmqJN0yNRATe+PO8ztwqrvrbdRLA3eYJF0yaR0YayLWkMbsQSKWS9N2gPcGEc4UsZg==
-
-meilisearch@^0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.45.0.tgz#52364961c0cee328ae3ff55d221cc7682ee3a891"
-  integrity sha512-+zCzEqE+CumY4icB0Vox180adZqaNtnr60hJWGiEdmol5eWmksfY8rYsTcz87styXC2ZOg+2yF56gdH6oyIBTA==
 
 merge-stream@^2.0.0:
   version "2.0.0"

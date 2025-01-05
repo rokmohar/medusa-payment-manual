@@ -1,19 +1,21 @@
-import { MedusaContainer, PaymentProviderError, PaymentProviderSessionResponse, WebhookActionResult } from '@medusajs/types'
+import {
+  MedusaContainer,
+  PaymentProviderError,
+  PaymentProviderSessionResponse,
+  WebhookActionResult,
+} from '@medusajs/types'
 import { AbstractPaymentProvider, PaymentActions, PaymentSessionStatus } from '@medusajs/utils'
 
-type ManualOptions = any
+type ManualOptions = any;
 
 export class ManualProviderService extends AbstractPaymentProvider<ManualOptions> {
   static identifier = 'manual'
 
-  protected readonly options_: ManualOptions
-  protected container_: Record<string, unknown>
+  protected options: ManualOptions
 
   constructor(container: MedusaContainer, options: ManualOptions) {
     super(container, options)
-
-    this.container_ = container
-    this.options_ = options
+    this.options = options
   }
 
   async getStatus(): Promise<string> {
