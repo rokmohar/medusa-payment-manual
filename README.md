@@ -1,4 +1,4 @@
-# medusa-payment-manual
+# Manual payment for MedusaJS v2
 
 ## Installation
 
