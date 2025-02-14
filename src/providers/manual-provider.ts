@@ -1,14 +1,22 @@
+import crypto from 'crypto'
 import {
+  AuthorizePaymentOutput,
+  CancelPaymentOutput,
+  CapturePaymentOutput,
+  DeletePaymentOutput,
+  GetPaymentStatusOutput,
+  InitiatePaymentOutput,
   MedusaContainer,
-  PaymentProviderError,
-  PaymentProviderSessionResponse,
+  RefundPaymentOutput,
+  RetrievePaymentOutput,
+  UpdatePaymentOutput,
   WebhookActionResult,
 } from '@medusajs/types'
 import { AbstractPaymentProvider, PaymentActions, PaymentSessionStatus } from '@medusajs/utils'
 
-type ManualOptions = any;
+type ManualOptions = Record<string, any>
 
-export class ManualProviderService extends AbstractPaymentProvider<ManualOptions> {
+export class ManualProviderService extends AbstractPaymentProvider {
   static identifier = 'manual'
 
   protected options: ManualOptions
@@ -26,46 +34,40 @@ export class ManualProviderService extends AbstractPaymentProvider<ManualOptions
     return {}
   }
 
-  async initiatePayment(): Promise<PaymentProviderSessionResponse> {
-    return { data: {} }
+  async initiatePayment(): Promise<InitiatePaymentOutput> {
+    return { data: {}, id: crypto.randomUUID() }
   }
 
-  async getPaymentStatus(): Promise<PaymentSessionStatus> {
+  async getPaymentStatus(): Promise<GetPaymentStatusOutput> {
     throw new Error('Method not implemented.')
   }
 
-  async retrievePayment(): Promise<Record<string, unknown> | PaymentProviderError> {
+  async retrievePayment(): Promise<RetrievePaymentOutput> {
     return {}
   }
 
-  async authorizePayment(): Promise<
-    | PaymentProviderError
-    | {
-        status: PaymentSessionStatus
-        data: PaymentProviderSessionResponse['data']
-      }
-  > {
+  async authorizePayment(): Promise<AuthorizePaymentOutput> {
     return { data: {}, status: PaymentSessionStatus.AUTHORIZED }
   }
 
-  async updatePayment(): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    return { data: {} } as PaymentProviderSessionResponse
+  async updatePayment(): Promise<UpdatePaymentOutput> {
+    return { data: {} }
   }
 
-  async deletePayment(): Promise<Record<string, unknown>> {
-    return {}
+  async deletePayment(): Promise<DeletePaymentOutput> {
+    return { data: {} }
   }
 
-  async capturePayment(): Promise<Record<string, unknown>> {
-    return {}
+  async capturePayment(): Promise<CapturePaymentOutput> {
+    return { data: {} }
   }
 
-  async refundPayment(): Promise<Record<string, unknown>> {
-    return {}
+  async refundPayment(): Promise<RefundPaymentOutput> {
+    return { data: {} }
   }
 
-  async cancelPayment(): Promise<Record<string, unknown>> {
-    return {}
+  async cancelPayment(): Promise<CancelPaymentOutput> {
+    return { data: {} }
   }
 
   async getWebhookActionAndData(): Promise<WebhookActionResult> {
