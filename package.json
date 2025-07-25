@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-payment-manual",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Manual payment plugin for Medusa 2",
   "main": "dist/index.js",
   "files": [
@@ -49,8 +49,11 @@
   },
   "keywords": [
     "medusa",
+    "medusa-v2",
+    "medusa-payment-manual",
     "medusa-plugin",
-    "medusa-payment",
-    "medusa-payment-manual"
-  ]
+    "medusa-plugin-integration",
+    "medusa-plugin-payment"
+  ],
+  "packageManager": "yarn@1.22.22"
 }
