@@ -1,33 +1,29 @@
 {
   "compilerOptions": {
-    "lib": ["es2021"],
-    "target": "es2021",
-    "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "declarationMap": true,
-    "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
     "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": true,
+    "lib": ["es2021"],
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "downlevelIteration": true, // to use ES5 specific tooling
-    "inlineSourceMap": true /* Emit a single file with source maps instead of having a separate file. */
+    "sourceMap": false,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "target": "es2021"
   },
   "include": ["src"],
-  "exclude": [
-    "dist",
-    "build",
-    "src/**/__tests__",
-    "src/**/__mocks__",
-    "src/**/__fixtures__",
-    "node_modules",
-    ".eslintrc.js"
-  ]
+  "exclude": ["dist", "eslint.config.*", "node_modules"]
 }

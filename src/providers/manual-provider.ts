@@ -11,8 +11,8 @@ import {
   RetrievePaymentOutput,
   UpdatePaymentOutput,
   WebhookActionResult,
-} from '@medusajs/types'
-import { AbstractPaymentProvider, PaymentActions, PaymentSessionStatus } from '@medusajs/utils'
+} from '@medusajs/framework/types'
+import { AbstractPaymentProvider, PaymentActions, PaymentSessionStatus } from '@medusajs/framework/utils'
 
 type ManualOptions = Record<string, any>
 

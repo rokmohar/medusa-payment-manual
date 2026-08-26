@@ -11,7 +11,7 @@ coverage
 
 !src/**
 
-./tsconfig.tsbuildinfo
+*.tsbuildinfo
 medusa-db.sql
 build
 .cache

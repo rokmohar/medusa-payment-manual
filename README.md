@@ -14,11 +14,11 @@ Or with **yarn**:
 yarn add @rokmohar/medusa-payment-manual
 ```
 
-## ⚠️ MedusaJS v2.5.0 or newer
+## ⚠️ MedusaJS v2.19.0 or newer
 
-This plugin is only for MedusaJS v2.5.0 or newer.
+This plugin is only for MedusaJS v2.19.0 or newer.
 
-If you are using MedusaJS v2.4.0 or older, please use the [older version of this plugin](https://github.com/rokmohar/medusa-payment-manual/tree/v0.1.4).
+If you are using an older version of MedusaJS, please use the [v1.0.3 version of this plugin](https://github.com/rokmohar/medusa-payment-manual/tree/v1.0.3).
 
 ## Configuration
 

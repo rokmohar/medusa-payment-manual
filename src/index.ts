@@ -1,6 +1,15 @@
-import { ModuleProvider, Modules } from '@medusajs/utils'
+import { ModuleProviderExports } from '@medusajs/framework/types'
+import { ModuleProvider, Modules } from '@medusajs/framework/utils'
 import { ManualProviderService } from './providers'
 
-export default ModuleProvider(Modules.PAYMENT, {
+/**
+ * Annotated explicitly so the emitted declaration references `@medusajs/framework/types`
+ * (a declared peer dependency) rather than the inferred `@medusajs/types`, which this
+ * package does not depend on directly.
+ */
+const manualPaymentProvider: ModuleProviderExports = ModuleProvider(Modules.PAYMENT, {
   services: [ManualProviderService],
 })
+
+export default manualPaymentProvider
+export { ManualProviderService }
