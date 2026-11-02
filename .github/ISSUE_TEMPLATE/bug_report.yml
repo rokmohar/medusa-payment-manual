@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in the plugin does not work as documented.
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Security vulnerabilities go through the [security policy](https://github.com/rokmohar/medusa-payment-manual/security/policy), not here.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead. Include error messages and logs.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: A minimal sequence of steps, requests or code that triggers the bug.
+      placeholder: |
+        1. Add pp_manual_manual to a region
+        2. Complete a cart with ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: The Payment Module entry from medusa-config.ts. Remove secrets.
+      render: ts
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: 1.1.0
+    validations:
+      required: true
+  - type: input
+    id: medusa-version
+    attributes:
+      label: Medusa version
+      placeholder: 2.22.2
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: 22.12.0
