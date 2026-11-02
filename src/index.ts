@@ -1,15 +1,8 @@
-import { ModuleProviderExports } from '@medusajs/framework/types'
-import { ModuleProvider, Modules } from '@medusajs/framework/utils'
-import { ManualProviderService } from './providers'
-
-/**
- * Annotated explicitly so the emitted declaration references `@medusajs/framework/types`
- * (a declared peer dependency) rather than the inferred `@medusajs/types`, which this
- * package does not depend on directly.
- */
-const manualPaymentProvider: ModuleProviderExports = ModuleProvider(Modules.PAYMENT, {
-  services: [ManualProviderService],
-})
-
-export default manualPaymentProvider
-export { ManualProviderService }
+export { ManualProviderService } from './providers/manual/service'
+export { buildEpcPayload, buildUpnPayload, type QrInput } from './lib/qr'
+export { buildReference } from './lib/reference'
+export { PAYMENT_TYPES, isPaymentType, type PaymentType } from './lib/payment-type'
+export type { BankAccount, QrType, ReferenceScheme } from './lib/types'
+export { getOrderPayment, type OrderPaymentResponse } from './lib/order-payment'
+export { getProviderLabels } from './lib/provider-labels'
+export { listManualProviders } from './lib/providers'
