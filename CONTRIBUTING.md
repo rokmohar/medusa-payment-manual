@@ -22,35 +22,38 @@ cd medusa-payment-manual
 yarn install
 ```
 
-| Command          | What it does                    |
-| ---------------- | ------------------------------- |
-| `yarn build`     | Compiles `src` into `dist`      |
-| `yarn watch`     | Recompiles on change            |
-| `yarn lint`      | Lints `src` with ESLint         |
-| `yarn typecheck` | Type-checks the plugin          |
-| `yarn format`    | Checks formatting with Prettier |
+| Command          | What it does                                     |
+| ---------------- | ------------------------------------------------ |
+| `yarn build`     | Builds the plugin into `.medusa/server`          |
+| `yarn dev`       | Rebuilds on change and republishes to local apps |
+| `yarn test`      | Runs the unit tests in `tests/unit`              |
+| `yarn lint`      | Lints `src` with ESLint                          |
+| `yarn typecheck` | Type-checks the server and admin code            |
+| `yarn format`    | Checks formatting with Prettier                  |
 
-CI runs `format`, `lint`, `typecheck` and `build` on pushes to and pull requests against `main`; run them before
-you open one. `yarn format:fix` and `yarn lint:fix` fix most findings.
+CI runs `format`, `lint`, `typecheck`, `test` and `build` on pushes to and pull requests against `main`; run them
+before you open one. `yarn format:fix` and `yarn lint:fix` fix most findings.
 
 ## Trying changes in a Medusa app
 
-Build the plugin and pack it into a tarball:
+Medusa publishes plugins to a local registry with [yalc](https://github.com/wclr/yalc):
 
 ```bash
-yarn build
-npm pack
+# in this repository
+npx medusa plugin:publish
+
+# in your Medusa application
+npx medusa plugin:add @rokmohar/medusa-payment-manual
 ```
 
-Then install the tarball in your Medusa application, for example
-`npm install /path/to/rokmohar-medusa-payment-manual-<version>.tgz`, and register the provider as described in the
-[README](./README.md#configuration).
+Then run `yarn dev` here: it rebuilds the plugin on every change and pushes it to the app. Register the plugin and
+provider as described in the [README](./README.md#configuration).
 
 ## Pull requests
 
 1. Fork the repository and branch off `main`.
-2. Keep each pull request to one change.
-3. Update the [README](./README.md) when you change something users see, and add an entry under `Unreleased` in
+2. Keep each pull request to one change, and add or update tests in `tests/unit` for behaviour changes.
+3. Update the [README](./README.md) when you change something users see, and add an entry under the unreleased version in
    [CHANGELOG.md](./CHANGELOG.md).
 4. Write commit messages in the [Conventional Commits](https://www.conventionalcommits.org/) style: `feat:`, `fix:`,
    `docs:`, `chore:`, `ci:`.

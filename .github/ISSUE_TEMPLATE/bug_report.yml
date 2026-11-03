@@ -28,13 +28,13 @@ body:
     id: config
     attributes:
       label: Configuration
-      description: The Payment Module entry from medusa-config.ts. Remove secrets.
+      description: The plugin and Payment Module entries from medusa-config.ts, and the provider's settings from the admin page (Settings → Manual Payments). Remove secrets.
       render: ts
   - type: input
     id: plugin-version
     attributes:
       label: Plugin version
-      placeholder: 1.1.0
+      placeholder: 2.0.0
     validations:
       required: true
   - type: input
@@ -48,4 +48,4 @@ body:
     id: node-version
     attributes:
       label: Node.js version
-      placeholder: 22.12.0
+      placeholder: 22.22.0

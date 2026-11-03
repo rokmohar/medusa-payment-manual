@@ -81,6 +81,9 @@ jobs:
             exit 1
           fi
 
+      - name: Test
+        run: yarn test
+
       - name: Build
         run: yarn build
 

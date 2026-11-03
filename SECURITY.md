@@ -6,8 +6,9 @@ Security fixes are released for the latest minor version of the current major li
 
 | Version          | Supported |
 | ---------------- | --------- |
-| Latest 1.x minor | Yes       |
-| Older 1.x minors | No        |
+| Latest 2.x minor | Yes       |
+| Older 2.x minors | No        |
+| 1.x              | No        |
 | 0.x              | No        |
 
 ## Reporting a vulnerability
