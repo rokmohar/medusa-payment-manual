@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { feeProviderOf, planFee } from '../../src/lib/fee'
+import { feeMatches, feeProviderOf, planFee } from '../../src/lib/fee'
 import { defaultSettings } from '../../src/lib/settings'
 import type { ProviderSettings } from '../../src/lib/types'
 
@@ -123,4 +123,22 @@ test('feeProviderOf: only variant-less items tagged with a provider id are our f
   assert.equal(feeProviderOf({ metadata: { manual_payment_fee: COD }, variant_id: 'variant_1' }), null)
   assert.equal(feeProviderOf({ metadata: { manual_payment_fee: 1 }, variant_id: null }), null)
   assert.equal(feeProviderOf({ metadata: null }), null)
+})
+
+test('feeMatches: the paying provider with its one fee at the configured amount, whatever the title', () => {
+  const input = { provider_id: COD, currency_code: 'eur', settings: cod() }
+
+  assert.equal(feeMatches({ ...input, fee_items: [codItem] }), true)
+  assert.equal(feeMatches({ ...input, fee_items: [{ ...codItem, title: 'Provizija' }] }), true)
+  assert.equal(feeMatches({ ...input, fee_items: [] }), false)
+  assert.equal(feeMatches({ ...input, fee_items: [{ ...codItem, unit_price: 0.99 }] }), false)
+  assert.equal(feeMatches({ ...input, fee_items: [codItem, { ...codItem, id: 'item_cod_2' }] }), false)
+  assert.equal(feeMatches({ ...input, fee_items: [{ ...codItem, provider_id: BANK }] }), false)
+})
+
+test('feeMatches: a provider without a fee matches only a cart without fee items', () => {
+  const input = { provider_id: 'pp_stripe_stripe', currency_code: 'eur', settings: null }
+
+  assert.equal(feeMatches({ ...input, fee_items: [] }), true)
+  assert.equal(feeMatches({ ...input, fee_items: [codItem] }), false)
 })

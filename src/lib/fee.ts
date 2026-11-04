@@ -64,3 +64,28 @@ export const planFee = (input: {
     add: amount === null || keep ? null : { amount, title },
   }
 }
+
+/**
+ * Whether the cart's fee items are exactly what the paying provider charges: its single fee at the configured amount,
+ * or none. The title is not compared; it only follows the cart's locale.
+ */
+export const feeMatches = (input: {
+  provider_id: string
+  currency_code: string
+  fee_items: FeeItem[]
+  settings: ProviderSettings | null
+}): boolean => {
+  const { provider_id, currency_code, fee_items, settings } = input
+  const amount = feeAmount(settings, currency_code)
+
+  if (amount === null) {
+    return !fee_items.length
+  }
+
+  return (
+    fee_items.length === 1 &&
+    fee_items.every((item) => {
+      return item.provider_id === provider_id && MathBN.eq(item.unit_price, amount)
+    })
+  )
+}

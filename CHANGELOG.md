@@ -6,7 +6,15 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
-## [2.0.0] - Unreleased
+## [2.0.1] - 2026-11-04
+
+### Fixed
+
+- Completing a cart whose fee items no longer match the paying provider (the fee setting changed, or the fee item was
+  left behind or removed around a session change) no longer places the order at the wrong total: the fee is corrected
+  and the request fails with `manual_payment_not_allowed:fee_changed`, so the customer confirms the payment again.
+
+## [2.0.0] - 2026-11-03
 
 **Breaking:** the provider is now resolved from `@rokmohar/medusa-payment-manual/providers/manual`, the package must
 also be listed in `plugins`, it needs a database migration (`npx medusa db:migrate`), and it requires Medusa 2.22.x and
@@ -127,7 +135,8 @@ Node.js 22.22 or newer. Unknown provider options are rejected at boot (only `typ
 
 - Manual payment provider for Medusa 2.
 
-[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.0.2...v1.0.3

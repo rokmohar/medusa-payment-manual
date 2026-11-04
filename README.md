@@ -223,6 +223,12 @@ When a payment session is created for an unavailable provider, or when the cart 
 unavailable, the request fails with an `INVALID_DATA` error whose message is `manual_payment_not_allowed:<reason>`. The
 reason is one of `disabled`, `country`, `min_total`, `max_total`, `currency` or `shipping_option`.
 
+Completing the cart also checks that its fee items are what the paying provider charges now: its one fee at the
+configured amount, or none. They can differ when the fee setting changed after the session was created, or when a cart
+change made Medusa delete the session while the fee item stayed. The plugin then corrects the fee items and fails with
+`manual_payment_not_allowed:fee_changed`. The corrected total makes Medusa drop the session, so the customer chooses the
+payment method again at the new total.
+
 Countries, currencies and shipping options each take one of three modes: all (no restriction), only selected (the
 cart's value must be listed) or all except selected (the cart's value must not be listed). A cart without a shipping
 address fails both country modes. A cart without a shipping method yet fails "only selected shipping options" and

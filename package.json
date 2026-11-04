@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-payment-manual",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Manual payment plugin for Medusa 2",
   "author": "Rok Mohar",
   "license": "MIT",

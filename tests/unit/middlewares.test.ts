@@ -204,9 +204,9 @@ test('malformed body and collection without a cart pass through', async () => {
 })
 
 const complete = async (cart: unknown, settings: Record<string, ProviderSettings>) => {
-  const { log, registrations, next } = setup(cart, settings)
+  const { log, flows, registrations, next } = setup(cart, settings)
   const req = createRequest({ params: { id: 'cart_1' } } as never, registrations)
-  await guardCartCompletion(req, createResponse().res, next)
+  await guardCartCompletion(flows as never)(req, createResponse().res, next)
 
   return log
 }
@@ -232,6 +232,68 @@ test('cart complete ignores canceled sessions and allowed providers', async () =
     },
   }
   assert.deepEqual(await complete(canceled, settings), ['next'])
+})
+
+test('cart complete with the fee the paying provider charges → next', async () => {
+  const cart = {
+    ...baseCart,
+    total: 51.99,
+    items: [...baseCart.items, codFeeItem],
+    payment_collection: { payment_sessions: [{ provider_id: COD, status: 'pending' }] },
+  }
+  const settings = { [COD]: { ...defaultSettings(COD), fee: { eur: 1.99 } } }
+  assert.deepEqual(await complete(cart, settings), ['next'])
+})
+
+test('cart complete without the fee its provider charges → fee added, then 400 fee_changed', async () => {
+  const cart = { ...baseCart, payment_collection: { payment_sessions: [{ provider_id: COD, status: 'pending' }] } }
+  const settings = { [COD]: { ...defaultSettings(COD), fee: { eur: 1.99 } } }
+  const { log, flows, registrations, next } = setup(cart, settings)
+  const req = createRequest({ params: { id: 'cart_1' } } as never, registrations)
+
+  await assert.rejects(
+    guardCartCompletion(flows as never)(req, createResponse().res, next),
+    (e: any) => e.message === 'manual_payment_not_allowed:fee_changed',
+  )
+  assert.equal(log.length, 1)
+  assert.equal((log[0] as [string, any])[0], 'add')
+  assert.equal((log[0] as [string, any])[1].items[0].unit_price, 1.99)
+})
+
+test('cart complete with a fee at a stale amount → replaced, then 400 fee_changed', async () => {
+  const cart = {
+    ...baseCart,
+    items: [...baseCart.items, codFeeItem],
+    payment_collection: { payment_sessions: [{ provider_id: COD, status: 'pending' }] },
+  }
+  const settings = { [COD]: { ...defaultSettings(COD), fee: { eur: 2.49 } } }
+  const { log, flows, registrations, next } = setup(cart, settings)
+  const req = createRequest({ params: { id: 'cart_1' } } as never, registrations)
+
+  await assert.rejects(
+    guardCartCompletion(flows as never)(req, createResponse().res, next),
+    (e: any) => e.message === 'manual_payment_not_allowed:fee_changed',
+  )
+  assert.deepEqual(
+    log.map((entry) => (entry as [string])[0]),
+    ['delete', 'add'],
+  )
+})
+
+test('cart complete paying a non-manual provider with a leftover fee → fee removed, then 400 fee_changed', async () => {
+  const cart = {
+    ...baseCart,
+    items: [...baseCart.items, codFeeItem],
+    payment_collection: { payment_sessions: [{ provider_id: 'pp_stripe_stripe', status: 'pending' }] },
+  }
+  const { log, flows, registrations, next } = setup(cart, {})
+  const req = createRequest({ params: { id: 'cart_1' } } as never, registrations)
+
+  await assert.rejects(
+    guardCartCompletion(flows as never)(req, createResponse().res, next),
+    (e: any) => e.message === 'manual_payment_not_allowed:fee_changed',
+  )
+  assert.deepEqual(log, [['delete', { cart_id: 'cart_1', ids: ['item_fee'] }]])
 })
 
 test('a product item tagged with the fee metadata is not treated as a fee item', async () => {

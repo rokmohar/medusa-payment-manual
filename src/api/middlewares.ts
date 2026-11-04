@@ -8,11 +8,16 @@ import {
 import { MedusaError } from '@medusajs/framework/utils'
 import { addToCartWorkflow, deleteLineItemsWorkflow } from '@medusajs/medusa/core-flows'
 import { z } from 'zod'
-import { cartIdOfPaymentCollection, currencyPricesIncludeTax, loadCartContext } from '../lib/cart-context'
-import { FEE_METADATA_KEY, planFee } from '../lib/fee'
+import {
+  cartIdOfPaymentCollection,
+  currencyPricesIncludeTax,
+  type LoadedCart,
+  loadCartContext,
+} from '../lib/cart-context'
+import { FEE_METADATA_KEY, feeMatches, planFee } from '../lib/fee'
 import { evaluateRules, isManualProviderId } from '../lib/rules'
 import { translateSettings } from '../lib/translations'
-import type { CartContext, ProviderSettings, StoredSettings } from '../lib/types'
+import type { CartContext, ProviderSettings, RuleReason, StoredSettings } from '../lib/types'
 import { MANUAL_PAYMENT_MODULE } from '../modules/manual-payment'
 import type ManualPaymentModuleService from '../modules/manual-payment/service'
 import { AdminRankManualProviders } from './admin/manual-payments/validators'
@@ -25,11 +30,60 @@ const getSettings = async (req: MedusaRequest, provider_id: string): Promise<Sto
     : null
 }
 
+type FeeFlows = { addToCartWorkflow: typeof addToCartWorkflow; deleteLineItemsWorkflow: typeof deleteLineItemsWorkflow }
+
+const notAllowed = (reason: RuleReason | 'fee_changed') => {
+  return new MedusaError(MedusaError.Types.INVALID_DATA, `manual_payment_not_allowed:${reason}`)
+}
+
 const assertAllowed = (settings: ProviderSettings | null, cart: CartContext) => {
   const verdict = evaluateRules(settings, cart)
 
   if (!verdict.allowed) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, `manual_payment_not_allowed:${verdict.reason}`)
+    throw notAllowed(verdict.reason)
+  }
+}
+
+// Brings the cart's fee items in line with what `provider_id` charges. Both workflows end in
+// refreshPaymentCollectionForCartWorkflow, so the collection amount follows without an explicit refresh.
+const syncFee = async (
+  req: MedusaRequest,
+  flows: FeeFlows,
+  input: { cart_id: string; provider_id: string; settings: StoredSettings | null; loaded: LoadedCart },
+) => {
+  const { cart_id, provider_id, settings, loaded } = input
+  const { cart, locale, fee_items } = loaded
+  // The fee item is variant-less, so Medusa doesn't translate it: title it in the cart's locale here.
+  const { fee_label } = await translateSettings(req.scope, settings, locale ?? req.locale)
+  const plan = planFee({
+    provider_id,
+    currency_code: cart.currency_code,
+    fee_items,
+    settings: settings && { ...settings, fee_label },
+  })
+
+  if (plan.remove.length) {
+    await flows.deleteLineItemsWorkflow(req.scope).run({ input: { cart_id, ids: plan.remove } })
+  }
+
+  if (plan.add) {
+    await flows.addToCartWorkflow(req.scope).run({
+      input: {
+        cart_id,
+        items: [
+          {
+            title: plan.add.title,
+            unit_price: plan.add.amount,
+            quantity: 1,
+            requires_shipping: false,
+            is_discountable: false,
+            // Variant-less items default to tax-exclusive; enter the fee like the prices in its currency.
+            is_tax_inclusive: await currencyPricesIncludeTax(req.scope, cart.currency_code),
+            metadata: { [FEE_METADATA_KEY]: provider_id },
+          },
+        ],
+      },
+    })
   }
 }
 
@@ -37,8 +91,7 @@ const assertAllowed = (settings: ProviderSettings | null, cart: CartContext) => 
 const sessionBodySchema = z.object({ provider_id: z.string() })
 
 // Runs before Medusa's handler, so createPaymentSessionsWorkflow sees the collection amount with the fee applied.
-// Both workflows end in refreshPaymentCollectionForCartWorkflow, so no explicit refresh is needed.
-export const guardPaymentSession = (flows = { addToCartWorkflow, deleteLineItemsWorkflow }): Middleware => {
+export const guardPaymentSession = (flows: FeeFlows = { addToCartWorkflow, deleteLineItemsWorkflow }): Middleware => {
   return async (req, _res, next) => {
     const body = sessionBodySchema.safeParse(req.body)
 
@@ -54,56 +107,46 @@ export const guardPaymentSession = (flows = { addToCartWorkflow, deleteLineItems
 
     const { provider_id } = body.data
     const settings = await getSettings(req, provider_id)
-    const { cart, locale, fee_items } = await loadCartContext(req.scope, cart_id)
+    const loaded = await loadCartContext(req.scope, cart_id)
 
-    assertAllowed(settings, cart)
-
-    // The fee item is variant-less, so Medusa doesn't translate it: title it in the cart's locale here.
-    const { fee_label } = await translateSettings(req.scope, settings, locale ?? req.locale)
-    const plan = planFee({
-      provider_id,
-      currency_code: cart.currency_code,
-      fee_items,
-      settings: settings && { ...settings, fee_label },
-    })
-
-    if (plan.remove.length) {
-      await flows.deleteLineItemsWorkflow(req.scope).run({ input: { cart_id, ids: plan.remove } })
-    }
-
-    if (plan.add) {
-      await flows.addToCartWorkflow(req.scope).run({
-        input: {
-          cart_id,
-          items: [
-            {
-              title: plan.add.title,
-              unit_price: plan.add.amount,
-              quantity: 1,
-              requires_shipping: false,
-              is_discountable: false,
-              // Variant-less items default to tax-exclusive; enter the fee like the prices in its currency.
-              is_tax_inclusive: await currencyPricesIncludeTax(req.scope, cart.currency_code),
-              metadata: { [FEE_METADATA_KEY]: provider_id },
-            },
-          ],
-        },
-      })
-    }
+    assertAllowed(settings, loaded.cart)
+    await syncFee(req, flows, { cart_id, provider_id, settings, loaded })
 
     next()
   }
 }
 
-// Re-checks the rules at completion: the cart may have changed since the session was created.
-export const guardCartCompletion: Middleware = async (req, _res, next) => {
-  const { cart, session_provider_ids } = await loadCartContext(req.scope, req.params.id)
+/**
+ * Re-checks the rules at completion: the cart may have changed since the session was created. The fee items must also
+ * match what the paying provider charges now (the fee setting changed, or the fee item was removed while the session
+ * was being created); otherwise they are corrected, which changes the cart total, so Medusa drops the stale session
+ * and the customer confirms the payment method again at the corrected total.
+ */
+export const guardCartCompletion = (flows: FeeFlows = { addToCartWorkflow, deleteLineItemsWorkflow }): Middleware => {
+  return async (req, _res, next) => {
+    const cart_id = req.params.id
+    const loaded = await loadCartContext(req.scope, cart_id)
+    const { cart, fee_items, session_provider_ids } = loaded
 
-  for (const provider_id of session_provider_ids) {
-    assertAllowed(await getSettings(req, provider_id), cart)
+    for (const provider_id of session_provider_ids) {
+      assertAllowed(await getSettings(req, provider_id), cart)
+    }
+
+    // ponytail: with several sessions the paying one is ambiguous, so the fee is checked for a single session only
+    const [provider_id, ...others] = session_provider_ids
+
+    if (provider_id && !others.length) {
+      const settings = await getSettings(req, provider_id)
+
+      if (!feeMatches({ provider_id, currency_code: cart.currency_code, fee_items, settings })) {
+        await syncFee(req, flows, { cart_id, provider_id, settings, loaded })
+
+        throw notAllowed('fee_changed')
+      }
+    }
+
+    next()
   }
-
-  next()
 }
 
 export default defineMiddlewares({
@@ -113,7 +156,7 @@ export default defineMiddlewares({
       matcher: '/store/payment-collections/:id/payment-sessions',
       middlewares: [guardPaymentSession()],
     },
-    { methods: ['POST'], matcher: '/store/carts/:id/complete', middlewares: [guardCartCompletion] },
+    { methods: ['POST'], matcher: '/store/carts/:id/complete', middlewares: [guardCartCompletion()] },
     {
       methods: ['POST'],
       matcher: '/admin/manual-payments/rank',
