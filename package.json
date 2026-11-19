@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-payment-manual",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Manual payment plugin for Medusa 2",
   "author": "Rok Mohar",
   "license": "MIT",
@@ -50,7 +50,7 @@
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --cache --cache-strategy content --log-level warn"
   },
   "dependencies": {
-    "zod": "4.2.0"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "~2.22.1",

@@ -6,6 +6,12 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-11-19
+
+### Security
+
+- zod 4.6.6 (from 4.2.0), the version Medusa 2.22.6 uses, for GHSA-mrhx-c7xc-m3w5.
+
 ## [2.0.1] - 2026-11-04
 
 ### Fixed
@@ -135,7 +141,8 @@ Node.js 22.22 or newer. Unknown provider options are rejected at boot (only `typ
 
 - Manual payment provider for Medusa 2.
 
-[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.2...HEAD
+[2.0.2]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.0.3...v1.1.0
