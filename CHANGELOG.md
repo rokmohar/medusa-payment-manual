@@ -6,6 +6,19 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-11-24
+
+**Breaking:** requires Medusa 2.23 or newer (`@medusajs/framework ^2.23.0`) with React 19. On Medusa 2.22, stay on
+2.0.2.
+
+### Changed
+
+- Built for Medusa 2.23: peer dependencies `@medusajs/* ^2.23.0`, `@medusajs/ui ^4.3.0`, `react ^19.3.1`,
+  `react-dom ^19.3.1` and `@tanstack/react-query ^5.107.1`. The admin extensions are built with Vite 8 and use
+  Tailwind CSS 4 class names.
+- zod 4.6.7 (from 4.6.6), the version Medusa 2.23.0 uses.
+- Development dependencies updated to their latest versions compatible with Medusa 2.23.
+
 ## [2.0.2] - 2026-11-19
 
 ### Security
@@ -141,7 +154,8 @@ Node.js 22.22 or newer. Unknown provider options are rejected at boot (only `typ
 
 - Manual payment provider for Medusa 2.
 
-[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v1.1.0...v2.0.0

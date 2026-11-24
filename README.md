@@ -20,11 +20,12 @@ everywhere, you capture payments by hand, and it adds no fee, instructions, bank
 
 | Plugin version | Medusa version  | Node.js |
 | -------------- | --------------- | ------- |
-| 2.x            | 2.22.x          | 22.22+  |
+| 2.1.x          | 2.23+           | 22.22+  |
+| 2.0.x          | 2.22.x          | 22.22+  |
 | 1.1.x          | 2.19 to 2.21    |         |
 | 1.0.x          | older than 2.19 |         |
 
-2.x declares `@medusajs/framework ~2.22.0` as a peer dependency. Using an older Medusa version? Install the matching
+2.1.x declares `@medusajs/framework ^2.23.0` as a peer dependency. Using an older Medusa version? Install the matching
 plugin version, for example [v1.0.3](https://github.com/rokmohar/medusa-payment-manual/tree/v1.0.3):
 
 ```bash

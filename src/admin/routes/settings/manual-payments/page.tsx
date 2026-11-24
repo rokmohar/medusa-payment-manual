@@ -95,7 +95,7 @@ const columns = [
           {/* A real link keeps rows reachable by keyboard and openable in a new tab. */}
           <Link
             to={detailPath(id)}
-            className="text-ui-fg-base focus-visible:shadow-borders-focus truncate rounded-sm outline-none"
+            className="text-ui-fg-base focus-visible:shadow-borders-focus truncate rounded-xs outline-hidden"
             onClick={(e) => {
               e.stopPropagation()
             }}
