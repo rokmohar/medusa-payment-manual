@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-payment-manual",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Manual payment plugin for Medusa 2",
   "author": "Rok Mohar",
   "license": "MIT",
@@ -83,11 +83,11 @@
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "^2.23.0",
-    "@medusajs/dashboard": "^2.23.0",
-    "@medusajs/framework": "^2.23.0",
+    "@medusajs/admin-sdk": "~2.23.0",
+    "@medusajs/dashboard": "~2.23.0",
+    "@medusajs/framework": "~2.23.0",
     "@medusajs/icons": "^2.23.0",
-    "@medusajs/medusa": "^2.23.0",
+    "@medusajs/medusa": "~2.23.0",
     "@medusajs/ui": "^4.3.0",
     "@tanstack/react-query": "^5.107.1",
     "react": "^19.3.1",

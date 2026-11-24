@@ -4761,11 +4761,11 @@ __metadata:
     yalc: "npm:^1.0.0-pre.53"
     zod: "npm:4.6.7"
   peerDependencies:
-    "@medusajs/admin-sdk": ^2.23.0
-    "@medusajs/dashboard": ^2.23.0
-    "@medusajs/framework": ^2.23.0
+    "@medusajs/admin-sdk": ~2.23.0
+    "@medusajs/dashboard": ~2.23.0
+    "@medusajs/framework": ~2.23.0
     "@medusajs/icons": ^2.23.0
-    "@medusajs/medusa": ^2.23.0
+    "@medusajs/medusa": ~2.23.0
     "@medusajs/ui": ^4.3.0
     "@tanstack/react-query": ^5.107.1
     react: ^19.3.1

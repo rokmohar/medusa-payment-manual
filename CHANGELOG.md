@@ -6,6 +6,14 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-11-24
+
+### Changed
+
+- Peer dependencies `@medusajs/admin-sdk`, `@medusajs/dashboard`, `@medusajs/framework` and `@medusajs/medusa` are
+  `~2.23.0` again (2.1.0 declared `^2.23.0`): the admin extensions import dashboard components, which can change between
+  Medusa minors, so each plugin minor supports one Medusa minor, as 2.0.x did.
+
 ## [2.1.0] - 2026-11-24
 
 **Breaking:** requires Medusa 2.23 or newer (`@medusajs/framework ^2.23.0`) with React 19. On Medusa 2.22, stay on
@@ -154,7 +162,8 @@ Node.js 22.22 or newer. Unknown provider options are rejected at boot (only `typ
 
 - Manual payment provider for Medusa 2.
 
-[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.2...v2.1.0
 [2.0.2]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/rokmohar/medusa-payment-manual/compare/v2.0.0...v2.0.1
